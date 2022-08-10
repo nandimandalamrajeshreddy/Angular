@@ -1,0 +1,51 @@
+<div class="container-fluid d-flex justify-content-center card" style="margin:10px;">
+  <h1 class="text-center mb-3">Products</h1>
+  <div *ngIf="message.length>0">
+    <span class="card" [style.color]="messageColor">
+        {{message}}
+    </span>
+  </div>
+  <div class="row">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Filter Products" [(ngModel)]="searchText">
+    </div>
+  </div>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th><button (click)="displayProductImage()" class="btn btn-primary">
+              {{prodButton+" Images"}}
+            </button></th>
+          <th>ID</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>In Stock</th>
+          <th>Color</th>
+          <th>Brand</th>
+          <th>Available</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <span *ngIf="products.length==0">No result found</span> -->
+        <tr *ngFor="let product of products | gridFilter:searchText">
+          <td>
+            <img *ngIf="isProdImgVisible" src="{{product.Image}}" [style.height.px]="prodImgHeight" [style.width.px]="prodImgWidth" />
+          </td>
+          <td>{{product.Id}}</td>
+          <td>{{product.Title}}</td>
+          <td>{{product.Price | currency:'INR'}}</td>
+          <td>{{product.InStock?'Yes':'No' }}</td>
+          <td [style.color]="product.Color">{{product.Color}}</td>
+          <td>{{product.Agency}}</td>
+          <td>{{product.Quantity}}</td>
+          <td>
+            <input type="number" minlength="0" [(ngModel)]="product.PurchaseQuantity" [disabled]="product.Quantity<50" />
+            <button type="button" class="btn btn-primary" [disabled]="product.Quantity<50" (click)="onPurchaseProduct(product)">Purchase</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
